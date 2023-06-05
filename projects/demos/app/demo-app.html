@@ -1,0 +1,60 @@
+<ng-template #loading>
+  <div class="card">
+    <div class="card-body text-center">
+      <i class="fas fa-spin fa-spinner fa-5x"></i> <br />
+      Loading demo...
+    </div>
+  </div>
+</ng-template>
+
+<div class="container-fluid main-content">
+  <div class="row fill-height">
+    <div
+      class="col fill-height scroll-y demo-container"
+      mwlDraggableScrollContainer
+    >
+      <div class="card" *ngIf="firstDemoLoaded; else loading">
+        <div class="card-header bg-black">
+          <div class="row">
+            <div class="col-md-6 font-white"><h3>Calendar</h3></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <ul ngbNav #nav="ngbNav" class="justify-content-start nav-tabs">
+            <li ngbNavItem domId="demo">
+              <a ngbNavLink><i class="fas fa-fw fa-laptop" ></i>App</a>
+              <ng-template ngbNavContent>
+                <div class="spacer-top"><router-outlet></router-outlet></div>
+              </ng-template>
+            </li>
+
+
+          </ul>
+          <div [ngbNavOutlet]="nav"></div>
+        </div>
+      </div>
+    </div>
+    <div class="fill-height sidebar-nav scroll-y">
+      <mwl-carbon-ad></mwl-carbon-ad>
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Search demos..."
+        [(ngModel)]="searchText"
+        (ngModelChange)="updateFilteredDemos()"
+      />
+      <ul class="list-unstyled spacer-top">
+        <li *ngFor="let demo of filteredDemos">
+          <a
+            [routerLink]="[demo.path]"
+            [class.active]="activeDemo?.path === demo.path"
+            (click)="nav.select('demo')"
+          >
+            {{ demo.label }}
+          </a>
+        </li>
+      </ul>
+      <em *ngIf="filteredDemos.length === 0">No matching demos found</em>
+    </div>
+  </div>
+</div>
